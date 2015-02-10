@@ -4,7 +4,8 @@ Created on Feb 7, 2015
 @author: chaikou
 '''
 
-from engines import RapGeniusEngine, AZLyricsEngine, SongLyricsEngine, LyricsManiaEngine, WikiaEngine
+import sys
+from engines import *
 
 class LyricsSearch:
     """
@@ -57,6 +58,23 @@ class LyricsSearch:
             noResults['link'] = ''
             noResults['lyrics'] = 'No results'
             return noResults
+
+    def getLyricsIndex(self, index):
+        if index >= 0 and index < len(self.results):
+            self.resultsIndex = index
+            return self.getLyrics()
+
+    def showLyrics(self):
+        try:
+            print self.getLyrics()['lyrics']
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+
+    def showLyricsIndex(self, index):
+        try:
+            print self.getLyricsIndex(index)['lyrics']
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
 
     def nextResult(self):
         if len(self.results) > (self.resultsIndex + 2):

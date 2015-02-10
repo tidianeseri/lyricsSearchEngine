@@ -280,8 +280,6 @@ class WikiaEngine(BaseEngine, object):
 
     def getLyrics(self, response):
         to_clean = response.find(class_="lyricbox")
-        # to_clean.script.clear()
-        # print to_clean
         scripts = to_clean.find_all("script")
         for scr in scripts:
             scr.clear()
