@@ -35,7 +35,7 @@ def cleanQuery(query):
     query = query.replace(' f. ', ' ')
 
     query = replaceWords(query, {'ft', 'official video', 'clip officiel', 'clip', 'lyrics'})
-    query = removeDigits(query)
+    # query = removeDigits(query)
 
     return query
 

@@ -8,6 +8,7 @@ import requests
 from lse.utils.cleaner import cleanQuery, formatHTMLNewLines
 from lse.utils.strikeamatch import compare_strings
 
+TIMEOUT = 5
 
 class BaseEngine:
 
@@ -31,10 +32,11 @@ class BaseEngine:
         '''
         Search a song
         '''
+
         query = cleanQuery(query)
         payload = self.setPayload(query)
         headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
-        r = requests.get(self.SEARCH_URL, params=payload, headers=headers)
+        r = requests.get(self.SEARCH_URL, params=payload, headers=headers, timeout=TIMEOUT)
         self.resultIndex = 0
 
         if (r.status_code == 200):
@@ -53,7 +55,7 @@ class BaseEngine:
         Search song lyrics
         '''
         headers = {'Accept': 'text/html'}
-        r = requests.get(link, headers=headers)
+        r = requests.get(link, headers=headers, timeout=TIMEOUT)
 
         if (r.status_code == 200):
             result = self.lyricsParser(r.text)
@@ -240,10 +242,50 @@ class Lyrics007Engine(BaseEngine, object):
     def getArtist(self, songResponse):
         artist = songResponse.text
         artist = artist.replace("Artist: ", "")
-        idx = artist.index("Song:")
+        idx = artist.find("Song:")
         return artist[:idx]
 
     def getLyrics(self, response):
         response = response.find(class_="content")
         response.div.clear()
         return response.text
+
+class WikiaEngine(BaseEngine, object):
+
+    def __init__(self):
+        super(self.__class__, self).__init__()
+
+        self.SEARCH_URL = "http://lyrics.wikia.com/Special:Search"
+        self.queryString = "search"
+
+    def songsDiv(self, response):
+        return response.find_all(class_="result", limit=10)
+
+    def getLink(self, songResponse):
+        return songResponse.a.get('href')
+
+    def getTitle(self, songResponse):
+        response = songResponse.h1.a.text
+        idx = response.find(':')
+        if idx > 0:
+            response = response[:idx]
+        return response
+
+    def getArtist(self, songResponse):
+        response = songResponse.h1.a.text
+        idx = response.find(':')
+        if idx > 0:
+            response = response[idx + 1:]
+        return response
+
+    def getLyrics(self, response):
+        to_clean = response.find(class_="lyricbox")
+        # to_clean.script.clear()
+        # print to_clean
+        scripts = to_clean.find_all("script")
+        for scr in scripts:
+            scr.clear()
+        br = to_clean.find_all("br")
+        for b in br:
+            b.replace_with("\n")
+        return to_clean.text
