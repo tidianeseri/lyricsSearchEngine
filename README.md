@@ -1,6 +1,6 @@
 # lyricsSearchEngine
 This tool let you easily find lyrics from various lyrics sites
-Included lyrics site parsers are 'RapGenius', 'SongLyrics', 'AZLyrics', 'Wikia' and 'LyricsMania'.
+Included lyrics site parsers are 'Genius', 'SongLyrics', 'AZLyrics', 'Wikia' and 'LyricsMania'.
 
 # Install
 To install:
