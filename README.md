@@ -13,6 +13,7 @@ from lse.client import LyricsSearch
 
 client = LyricsSearch()
 
+
 Search:
 
 client.search("Enter your query")
@@ -21,11 +22,13 @@ The results are stored and sorted by relevance in an array:
 
 client.results
 
+
 Get the lyrics:
 
 client.getLyrics()
 
 or client.getLyricsIndex(idx)  //idx is the position of a specific result 
+
 
 Show the lyrics:
 
@@ -33,9 +36,11 @@ client.showLyrics()
 
 or client.showLyricsIndex(idx)
 
+
 Advance to the next result:
 
 client.nextResult()
+
 
 # Example
 client = LyricsSearch()
