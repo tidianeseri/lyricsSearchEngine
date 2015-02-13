@@ -64,15 +64,23 @@ class LyricsSearch:
             self.resultsIndex = index
             return self.getLyrics()
 
-    def showLyrics(self):
+    def showLyrics(self, formating=True):
         try:
-            print self.getLyrics()['lyrics']
+            if formating == True:
+                lyrics = self.getLyrics()['lyrics'].replace('<br \>', '\n')
+            else:
+                lyrics = self.getLyrics()['lyrics']
+            print lyrics
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
-    def showLyricsIndex(self, index):
+    def showLyricsIndex(self, index, formating=True):
         try:
-            print self.getLyricsIndex(index)['lyrics']
+            if formating == True:
+                lyrics = self.getLyricsIndex(index)['lyrics'].replace('<br \>', '\n')
+            else:
+                lyrics = self.getLyricsIndex(index)['lyrics']
+            print lyrics
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
