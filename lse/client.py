@@ -18,6 +18,7 @@ class LyricsSearch:
         self.resultsIndex = 0
         self.enginesNameList = ['RapGeniusEngine', 'SongLyricsEngine', 'AZLyricsEngine', 'WikiaEngine', 'LyricsManiaEngine' ]
         self.enginesList = []
+        self.nbResults = 0
         self.initEngines()
 
     def initEngines(self):
@@ -38,14 +39,15 @@ class LyricsSearch:
         self.results = self.engine.searchSongs(query)
         self.results = sorted(self.results, key=lambda score: score['score'], reverse=True)
         self.resultsIndex = 0
+        self.nbResults = len(self.results)
 
         return self.results
 
     def getLyrics(self, formating=True):
         if len(self.results) > 0:
 
-            if self.results[self.resultsIndex]['score'] < 0.75:
-                print "Result score is only " + str(self.results[self.resultsIndex]['score'])
+            # if self.results[self.resultsIndex]['score'] < 0.75:
+                # print "Result score is only " + str(self.results[self.resultsIndex]['score'])
 
             # print "Showing: " + self.results[self.resultsIndex]['artist'] + " " + self.results[self.resultsIndex]['title'] + "\n"
 
@@ -91,7 +93,7 @@ class LyricsSearch:
             print "Unexpected error:", sys.exc_info()[0]
 
     def nextResult(self):
-        if len(self.results) > (self.resultsIndex + 2):
+        if len(self.results) >= (self.resultsIndex + 2):
             self.resultsIndex += 1
 
     def getResults(self):
