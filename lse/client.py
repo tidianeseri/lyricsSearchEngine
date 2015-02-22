@@ -41,17 +41,21 @@ class LyricsSearch:
 
         return self.results
 
-    def getLyrics(self):
+    def getLyrics(self, formating=True):
         if len(self.results) > 0:
 
             if self.results[self.resultsIndex]['score'] < 0.75:
                 print "Result score is only " + str(self.results[self.resultsIndex]['score'])
 
-            print "Showing: " + self.results[self.resultsIndex]['artist'] + " " + self.results[self.resultsIndex]['title'] + "\n"
+            # print "Showing: " + self.results[self.resultsIndex]['artist'] + " " + self.results[self.resultsIndex]['title'] + "\n"
 
             classname = self.results[self.resultsIndex]['engine']
             engine_class = globals()[classname]
-            return engine_class().searchSongLyrics(self.results[self.resultsIndex]['link'])
+            if formating == True:
+                engine_class().searchSongLyrics(self.results[self.resultsIndex]['link'])['lyrics'].replace('<br \>', '\n')
+                return engine_class().searchSongLyrics(self.results[self.resultsIndex]['link'])
+            else:
+                return engine_class().searchSongLyrics(self.results[self.resultsIndex]['link'])
 
         else:
             noResults = {}
@@ -59,7 +63,7 @@ class LyricsSearch:
             noResults['lyrics'] = 'No results'
             return noResults
 
-    def getLyricsIndex(self, index):
+    def getLyricsIndex(self, index, formating=True):
         if index >= 0 and index < len(self.results):
             self.resultsIndex = index
             return self.getLyrics()
@@ -71,6 +75,7 @@ class LyricsSearch:
             else:
                 lyrics = self.getLyrics()['lyrics']
             print lyrics
+            return lyrics
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
@@ -81,6 +86,7 @@ class LyricsSearch:
             else:
                 lyrics = self.getLyricsIndex(index)['lyrics']
             print lyrics
+            return lyrics
         except:
             print "Unexpected error:", sys.exc_info()[0]
 

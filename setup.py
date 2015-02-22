@@ -1,8 +1,8 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
   name='lyricsSearchEngine',
-  packages=['lse'],
+  packages=find_packages(),
   version='0.1',
   description='A lyrics search engine from various sources on the internet',
   author='Tidiane Seri-Gnoleba',
